@@ -1,0 +1,377 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  background-color: black;
+}
+section {
+  background: linear-gradient(
+      rgba(231, 229, 228, 0.9),
+      rgba(115, 115, 115, 0.5)
+    ),
+    url("./assets/photo-1534438327276-14e5300c3a48.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#headerH1 {
+  text-align: center;
+  font-size: 45px;
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#navbar.active {
+  right: 0px;
+}
+#navbar {
+  z-index: 1000; /* Add a higher z-index value */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 469px) {
+  #navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed;
+    top: 123px;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
+    background: #2a3239;
+    box-shadow: 0 40px 60px rgba(0, 0, 0, 0.1);
+    padding: 40px 0 0 10px;
+    transition: 0.3s ease-in-out;
+  }
+}
+
+#watermark {
+  /* font-size: 20rem; */
+  opacity: 0.5;
+
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media screen and (max-width: 769px) {
+  #watermark {
+    display: none;
+  }
+}
+.glow {
+  animation: flicker 1.5s infinite alternate;
+  color: black;
+}
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px #0fa,
+      0 0 80px #0fa, 0 0 90px #0fa, 0 0 100px #0fa, 0 0 150px #0fa;
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+.active-link .icon-path {
+  fill: black; /* Set the fill color to black when the link is active */
+}
+
+input:focus {
+  outline: none;
+}
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  padding: 0.25rem;
+  position: relative;
+  bottom: -10px;
+}
+
+.instructions > svg {
+  margin-right: 0.25rem;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.errmsg {
+  background-color: rgb(26, 22, 22);
+  color: white;
+  font-weight: bold;
+  border-radius: 30px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.line {
+  display: inline-block;
+}
+.active-btn {
+  background-color: black; /* Set the background color for the active button */
+  color: #fff; /* Set the text color for the active button */
+}
+
+/* YourComponent.css */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  /* margin: 20px 0 30px; */
+}
+
+span {
+  font-size: 12px;
+}
+
+a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+.hidden {
+  content: "";
+}
+@media screen and (max-width: 400px) {
+  .hidden {
+    display: none;
+  }
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.ghost {
+  background-color: transparent;
+  border-color: #000000;
+  color: #000000;
+}
+
+#form,
+#forms {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+#form input,
+#forms input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 520px;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+
+@keyframes show {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+/* @media screen and (max-width: 400px) {
+  .overlay-container {
+    display: none;
+  }
+} */
+
+/* @media screen and (max-width: 400px) {
+  #form {
+    width: 80vw;
+  }
+} */
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: #383435;
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(231, 229, 228, 0.9),
+    rgba(115, 115, 115, 0.5)
+  );
+  background: linear-gradient(
+    to right,
+    rgba(231, 229, 228, 0.9),
+    rgba(39, 37, 37, 0.5)
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #000000;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
