@@ -11,7 +11,24 @@ import { useAuth } from "../contexts/AuthenticationContext";
 function Dashboard() {
   const { auth } = useAuth();
   console.log(auth);
-  const id = auth?.foundUser._id;
+  const id = auth?.foundUser?._id;
+  function calculateAge(dateOfBirth) {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    return age;
+  }
+
+  // Usage:
+  const dateOfBirth = auth?.foundUser?.DOB;
+  const age = calculateAge(dateOfBirth);
   return (
     <div className="flex justify-between h-screen">
       <div className=" w-[7%]  bg-black flex flex-col gap-24  items-center ">
@@ -79,19 +96,19 @@ function Dashboard() {
               <div>
                 Height
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  175cm
+                  {auth?.foundUser?.height}cm
                 </button>
               </div>
               <div>
                 Weight
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  73kg
+                  {auth?.foundUser?.weight}kg
                 </button>
               </div>
               <div>
                 Age
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  28 years
+                  {age} years
                 </button>
               </div>
             </div>
@@ -122,7 +139,7 @@ function Dashboard() {
               </div>
             </div>
           </div>
-        )}{" "}
+        )}
       </div>
     </div>
   );

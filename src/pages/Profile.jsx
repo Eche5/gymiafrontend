@@ -6,18 +6,25 @@ import {
   faTimes,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../components/Spinner";
 import { useAuth } from "../contexts/AuthenticationContext";
+import axios from "../api/axios";
+import { useParams } from "react-router-dom";
 
 function Profile() {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const [isReadOnly, setIsReadOnly] = useState(true);
+  useEffect(() => {
+    if (auth?.foundUser?.isVerified) {
+      setIsReadOnly(false);
+    } else {
+      setIsReadOnly(false);
+    }
+  }, []);
 
   const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-  const errRef = useRef();
-
   const firstNameRef = useRef();
-
-  const [errMsg, setErrMsg] = useState("");
 
   const [validName, setValidName] = useState(false);
 
@@ -31,13 +38,13 @@ function Profile() {
 
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const [isSigningUp, setisSigningUp] = useState("Sign Up");
+  const [isSigningUp, setisSigningUp] = useState("Update Me");
 
   const [email, setEmail] = useState(auth?.foundUser?.email);
 
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(auth?.foundUser?.weight || 0);
 
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(auth?.foundUser?.height || 0);
 
   const [validEmail, setValidEmail] = useState(false);
 
@@ -53,7 +60,9 @@ function Profile() {
 
   const [phonenumber, setPhonenumber] = useState(auth?.foundUser?.phonenumber);
 
-  const [date, setDate] = useState("");
+  const [address, setAddress] = useState(auth?.foundUser?.address || "");
+
+  const [date, setDate] = useState(auth?.foundUser?.DOB || "");
 
   const [validPhoneNumber, setIsValidPhoneNumber] = useState(false);
 
@@ -62,7 +71,9 @@ function Profile() {
   const isValidName = firstname.length >= 4;
 
   const isValidLastName = lastname.length > 4;
-  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedGender, setSelectedGender] = useState(
+    auth?.foundUser?.gender || ""
+  );
 
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
@@ -72,8 +83,6 @@ function Profile() {
     (phonenumber.length >= 11 && phonenumber.startsWith("08")) ||
     phonenumber.startsWith("09") ||
     phonenumber.startsWith("07");
-
-  const [isSignedUp, setIsSignedUp] = useState(false);
 
   useEffect(() => {
     if (isValidName) {
@@ -117,23 +126,43 @@ function Profile() {
   useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
   }, [email, EMAIL_REGEX]);
+  const params = useParams();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const id = params.id;
+
   const currentDate = new Date();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = currentDate.toLocaleDateString(undefined, options);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can submit the form data or perform validation here
-    // For now, let's just log the data
-    console.log(formData);
+    const bio = {
+      name,
+      firstname,
+      email,
+      phonenumber,
+      gender: selectedGender,
+      weight,
+      height,
+      address,
+      DOB: date,
+    };
+    try {
+      setisSigningUp("Is Updating...");
+      const response = await axios.patch(`/users/${id}`, JSON.stringify(bio), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const user = response?.data?.updatedUser;
+      console.log(user);
+      if (response.status === 200) {
+        setAuth({ foundUser: user });
+        setisSigningUp("Updated...");
+      }
+    } catch (error) {
+      setisSigningUp("Update Me");
+    } finally {
+      setisSigningUp("Update Me");
+    }
   };
   return (
     <div>
@@ -177,7 +206,7 @@ function Profile() {
     flex flex-col justify-center items-center  p-4 rounded-lg
   "
       >
-        <form className="flex flex-col pb-4">
+        <form className="flex flex-col pb-4" onSubmit={handleSubmit}>
           <div className=" laptop:flex laptop:justify-between gap-1 ">
             <label htmlFor="firstname">
               <FontAwesomeIcon
@@ -282,7 +311,7 @@ function Profile() {
               <input
                 type="Date"
                 id="Date"
-                readOnly
+                readOnly={isReadOnly}
                 autoComplete="off"
                 placeholder="Date"
                 onChange={(e) => setDate(e.target.value)}
@@ -339,7 +368,7 @@ function Profile() {
             <select
               id="genderSelect"
               value={selectedGender}
-              disabled
+              disabled={isReadOnly}
               onChange={handleGenderChange}
               className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
             >
@@ -356,10 +385,11 @@ function Profile() {
               <input
                 type="number"
                 id="weight"
+                value={weight}
                 placeholder="weight/kg"
                 onChange={(e) => setWeight(e.target.value)}
                 required
-                readOnly
+                readOnly={isReadOnly}
                 aria-invalid={validPwd ? "false" : "true"}
                 aria-describedby="pwdnote"
                 className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
@@ -377,10 +407,11 @@ function Profile() {
               <input
                 type="number"
                 id="height"
+                value={height}
                 placeholder="Height/cm"
                 onChange={(e) => setHeight(e.target.value)}
                 required
-                readOnly
+                readOnly={isReadOnly}
                 aria-invalid={validHeight ? "false" : "true"}
                 aria-describedby="confirmnote"
                 className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
@@ -401,7 +432,7 @@ function Profile() {
             <select
               id="genderSelect"
               value={selectedGender}
-              disabled
+              disabled={isReadOnly}
               onChange={handleGenderChange}
               className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4  phone:mb-6"
             >
@@ -424,25 +455,20 @@ function Profile() {
           <input
             type="address"
             id="address"
-            ref={firstNameRef}
-            readOnly
+            readOnly={isReadOnly}
             placeholder=" Address"
             autoComplete="off"
-            onChange={(e) => setFirstname(e.target.value)}
-            value={firstname}
+            onChange={(e) => setAddress(e.target.value)}
+            value={address}
             required
             aria-invalid={validName ? "false" : "true"}
             aria-describedby="uidnote"
-            onFocus={() => setFirstNameFocus(true)}
-            onBlur={() => setFirstNameFocus(false)}
             className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
           />
           <div className=" flex justify-center gap-4">
-            <button className="bg-red-700 text-white rounded-lg w-full py-2 px-8 mt-4">
-              Cancel
-            </button>
             <button
-              disabled={!validName || !validPwd || !validWeight ? true : false}
+              type="submit"
+              // disabled={!validName || !validPwd || !validWeight ? true : false}
               className={
                 validWeight
                   ? `border rounded-lg border-transparent py-2 px-8 text-base font-medium text-white w-full ${

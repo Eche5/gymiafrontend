@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import MobileRegister from "./pages/MobileRegister";
 import MobileLogin from "./pages/MobileLogin";
 import GoogleAuth from "./components/GoogleAuth";
+import PersistLogin from "./components/PersisLogin";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -62,19 +63,21 @@ function App() {
           </>
         )}
         <Route path="/admin/register" element={<Register />} />
-        <Route path="/admin/:id" element={<AdminDashboard />}>
-          <Route path="/admin/:id" element={<AdminOverView />} />
-          <Route path="trainee" element={<Trainees />} />
-          <Route path="trainers" element={<Trainers />} />
-          <Route path="attendance" element={<Attendance />} />
-          <Route path="payments" element={<Payments />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
-        <Route element={<Dashboard />}>
-          <Route path="/:id" element={<MainDashboard />} />
-          <Route path="/:id/message" element={<Chat />} />
-          <Route path="/:id/profile" element={<Profile />} />
-          <Route path="/:id/schedule" element={<Calendar />} />
+        <Route element={<PersistLogin />}>
+          <Route path="/admin/:id" element={<AdminDashboard />}>
+            <Route path="/admin/:id" element={<AdminOverView />} />
+            <Route path="trainee" element={<Trainees />} />
+            <Route path="trainers" element={<Trainers />} />
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="payments" element={<Payments />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+          <Route element={<Dashboard />}>
+            <Route path="/:id" element={<MainDashboard />} />
+            <Route path="/:id/message" element={<Chat />} />
+            <Route path="/:id/profile" element={<Profile />} />
+            <Route path="/:id/schedule" element={<Calendar />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
