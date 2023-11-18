@@ -6,6 +6,7 @@ const authContext = createContext();
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [isSignInActive, setIsSignInActive] = useState(true);
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   const handleSignUpClick = () => {
     setIsSignInActive(false);
@@ -20,6 +21,8 @@ const AuthProvider = ({ children }) => {
       value={{
         setAuth,
         auth,
+        isSignedUp,
+        setIsSignedUp,
         isSignInActive,
         setIsSignInActive,
         handleSignInClick,

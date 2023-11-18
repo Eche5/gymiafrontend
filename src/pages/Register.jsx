@@ -38,6 +38,8 @@ function Register() {
 
   const [firstname, setFirstname] = useState("");
 
+  const { isSignedUp, setIsSignedUp } = useAuth();
+
   const [lastname, setLastname] = useState("");
 
   const [pwd, setPwd] = useState("");
@@ -56,8 +58,6 @@ function Register() {
     (phonenumber.length >= 11 && phonenumber.startsWith("08")) ||
     phonenumber.startsWith("09") ||
     phonenumber.startsWith("07");
-
-  const [isSignedUp, setIsSignedUp] = useState(false);
 
   useEffect(() => {
     if (isValidName) {
@@ -99,10 +99,7 @@ function Register() {
 
   const REGISTER_URL = "/users/register";
 
-  const { setAuth, isSignInActive } = useAuth();
-
-  const navigate = useNavigate();
-
+  //Signup function
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -132,28 +129,18 @@ function Register() {
 
       setisSigningUp("Creating your account...");
 
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify(userData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const accessToken = response?.data?.accessToken;
-
-      const foundUser = response?.data?.newUser;
-
-      setAuth({ foundUser, accessToken });
+      await axios.post(REGISTER_URL, JSON.stringify(userData), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       setisSigningUp("Sign Up");
       setIsSignedUp(true);
     } catch (error) {
-      if (error.response.status === 403);
+      if (error?.response?.status === 403);
 
-      setErrMsg(error.response.data.message);
+      setErrMsg(error?.response?.data?.message);
 
       setIsAuthenticating(false);
 
@@ -162,11 +149,7 @@ function Register() {
   };
 
   return (
-    <div
-      className={
-        isSignInActive ? " hidden" : "form-container sign-up-container"
-      }
-    >
+    <div className="form-container sign-up-container">
       <form onSubmit={handleSubmit} id="forms">
         <h1>Create Account</h1>
         <p

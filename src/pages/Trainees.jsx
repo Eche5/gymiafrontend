@@ -79,7 +79,6 @@ function Trainees() {
     }
     getUsers();
   }, []);
-  console.log(users);
   const isValidPhoneNumber =
     (phonenumber.length >= 11 && phonenumber.startsWith("08")) ||
     phonenumber.startsWith("09") ||

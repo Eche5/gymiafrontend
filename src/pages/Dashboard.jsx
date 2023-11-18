@@ -10,7 +10,6 @@ import { useAuth } from "../contexts/AuthenticationContext";
 
 function Dashboard() {
   const { auth } = useAuth();
-  console.log(auth);
   const id = auth?.foundUser?._id;
   function calculateAge(dateOfBirth) {
     const dob = new Date(dateOfBirth);
@@ -96,19 +95,19 @@ function Dashboard() {
               <div>
                 Height
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  {auth?.foundUser?.height}cm
+                  {auth?.foundUser?.height || "--"}cm
                 </button>
               </div>
               <div>
                 Weight
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  {auth?.foundUser?.weight}kg
+                  {auth?.foundUser?.weight || "--"}kg
                 </button>
               </div>
               <div>
                 Age
                 <button className="w-20  bg-gray-900 text-white p-1 rounded-lg">
-                  {age} years
+                  {age || "--"} years
                 </button>
               </div>
             </div>

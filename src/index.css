@@ -226,6 +226,10 @@ button.ghost {
   text-align: center;
 }
 
+#hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 #form input,
 #forms input {
   background-color: #eee;

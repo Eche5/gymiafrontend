@@ -15,7 +15,7 @@ function Chat() {
   const { auth } = useAuth();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const socket = io(`https://gymia.adaptable.app`);
+  const socket = io("https://gymia.adaptable.app/");
   const params = useParams();
   const id = params.id;
   useEffect(() => {
@@ -48,7 +48,7 @@ function Chat() {
     // Update local state
     setNewMessage("");
   };
-  const totalHeight = messages.length * 80; // Assuming each chat message has a height of 80px
+  const totalHeight = messages?.length * 80; // Assuming each chat message has a height of 80px
 
   return (
     <div>
@@ -93,6 +93,7 @@ function Chat() {
             ? "max-h-[480px] overflow-y-scroll"
             : "max-h-[480px] overflow-y-hidden"
         }
+        id="hide-scrollbar"
       >
         <div className="chat chat-start">
           <div className="chat-image avatar">

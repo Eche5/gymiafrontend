@@ -7,7 +7,6 @@ function useRefresherToken() {
     const REFRESH_URL = "/users";
 
     const response = await axios.get(REFRESH_URL, { withCredentials: true });
-    console.log(response);
     const accessToken = response?.data?.accessToken;
     const foundUser = response?.data?.data;
 

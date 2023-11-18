@@ -15,41 +15,42 @@ import Trainers from "./pages/Trainers";
 import Attendance from "./pages/Attendance";
 import Payments from "./pages/Payments";
 import Settings from "./pages/Settings";
-import ChatApp from "./pages/ChatApp";
 import { useEffect, useState } from "react";
 import MobileRegister from "./pages/MobileRegister";
 import MobileLogin from "./pages/MobileLogin";
-import GoogleAuth from "./components/GoogleAuth";
 import PersistLogin from "./components/PersisLogin";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Verify from "./pages/Verify";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const checkScreenWidth = () => {
       const newScreenWidth = window.innerWidth;
+
       setIsMobile(newScreenWidth < 768);
     };
 
-    // Initial check
     checkScreenWidth();
 
-    // Add event listener for window resize
     window.addEventListener("resize", checkScreenWidth);
 
-    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener("resize", checkScreenWidth);
     };
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
-  console.log(isMobile);
+  }, []);
 
   return (
     <Routes>
       <Route path="/" element={<Root />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/chat" element={<ChatApp />} />
-        <Route path="/auth" element={<GoogleAuth />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/verify/:id" element={<Verify />} />
+
+        <Route path="/resetpassword/:id/:token" element={<ResetPassword />} />
         {!isMobile && (
           <>
             <Route path="/login" element={<Login />} />

@@ -13,14 +13,20 @@ import { useParams } from "react-router-dom";
 
 function Profile() {
   const { auth, setAuth } = useAuth();
+  const isVerified = auth?.foundUser?.isVerified;
+
   const [isReadOnly, setIsReadOnly] = useState(true);
+  console.log(isReadOnly);
+
   useEffect(() => {
-    if (auth?.foundUser?.isVerified) {
+    if (!isVerified) {
       setIsReadOnly(false);
     } else {
-      setIsReadOnly(false);
+      setIsReadOnly(true);
     }
-  }, []);
+  }, [isVerified]);
+
+  console.log(isReadOnly, isVerified);
 
   const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -68,9 +74,9 @@ function Profile() {
 
   const [phonenumberFocus, setPhonenumberFocus] = useState(false);
 
-  const isValidName = firstname.length >= 4;
+  const isValidName = firstname?.length >= 4;
 
-  const isValidLastName = lastname.length > 4;
+  const isValidLastName = lastname?.length > 4;
   const [selectedGender, setSelectedGender] = useState(
     auth?.foundUser?.gender || ""
   );
@@ -80,9 +86,9 @@ function Profile() {
   };
 
   const isValidPhoneNumber =
-    (phonenumber.length >= 11 && phonenumber.startsWith("08")) ||
-    phonenumber.startsWith("09") ||
-    phonenumber.startsWith("07");
+    (phonenumber?.length >= 11 && phonenumber.startsWith("08")) ||
+    phonenumber?.startsWith("09") ||
+    phonenumber?.startsWith("07");
 
   useEffect(() => {
     if (isValidName) {
@@ -206,7 +212,11 @@ function Profile() {
     flex flex-col justify-center items-center  p-4 rounded-lg
   "
       >
-        <form className="flex flex-col pb-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col pb-4 desktop:overflow-y-scroll  desktop:h-[80vh]"
+          id="hide-scrollbar"
+          onSubmit={handleSubmit}
+        >
           <div className=" laptop:flex laptop:justify-between gap-1 ">
             <label htmlFor="firstname">
               <FontAwesomeIcon
@@ -311,7 +321,7 @@ function Profile() {
               <input
                 type="Date"
                 id="Date"
-                readOnly={isReadOnly}
+                readOnly={!isReadOnly}
                 autoComplete="off"
                 placeholder="Date"
                 onChange={(e) => setDate(e.target.value)}
@@ -368,7 +378,7 @@ function Profile() {
             <select
               id="genderSelect"
               value={selectedGender}
-              disabled={isReadOnly}
+              disabled={!isReadOnly}
               onChange={handleGenderChange}
               className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
             >
@@ -389,7 +399,7 @@ function Profile() {
                 placeholder="weight/kg"
                 onChange={(e) => setWeight(e.target.value)}
                 required
-                readOnly={isReadOnly}
+                readOnly={!isReadOnly}
                 aria-invalid={validPwd ? "false" : "true"}
                 aria-describedby="pwdnote"
                 className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
@@ -411,7 +421,7 @@ function Profile() {
                 placeholder="Height/cm"
                 onChange={(e) => setHeight(e.target.value)}
                 required
-                readOnly={isReadOnly}
+                readOnly={!isReadOnly}
                 aria-invalid={validHeight ? "false" : "true"}
                 aria-describedby="confirmnote"
                 className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4 w-full phone:mb-6"
@@ -432,7 +442,7 @@ function Profile() {
             <select
               id="genderSelect"
               value={selectedGender}
-              disabled={isReadOnly}
+              disabled={!isReadOnly}
               onChange={handleGenderChange}
               className="text-[22px] p-1 rounded-lg bg-white text-black  pl-4  phone:mb-6"
             >
@@ -455,7 +465,7 @@ function Profile() {
           <input
             type="address"
             id="address"
-            readOnly={isReadOnly}
+            readOnly={!isReadOnly}
             placeholder=" Address"
             autoComplete="off"
             onChange={(e) => setAddress(e.target.value)}
